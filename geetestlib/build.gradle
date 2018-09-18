@@ -1,0 +1,121 @@
+group 'me.ithome.android.geetest'
+version '3.5.7.04'
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+//配置bintray参数
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintrayUser")
+    key = properties.getProperty("bintrayApiKey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"               //跟上面创建的Maven仓库名字保持一致
+        name = "geetest_sensebot_android"                //发布到JCenter上的项目名字
+        websiteUrl = ''
+        vcsUrl = ''
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
+}
+
+// 根节点添加
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                name 'Geetest For Android'
+                url ''
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer { //填写的一些基本信息
+                        id 'cikichen'
+                        name 'Simon.Chen'
+                        email 'admin@ithome.me'
+                    }
+                }
+                scm {
+                    connection ''
+                    developerConnection ''
+                    url ''
+                }
+            }
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenLocal()
+    }
+}
+
+apply plugin: 'maven-publish'
+publishing {
+    publications {
+        library(MavenPublication) {
+            version "1.0.0"
+            artifact(bundleRelease)
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    compileOnly 'com.android.support:appcompat-v7:28.0.0-rc02'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    api(name: 'geetest_sensebot_android_v3.5.7.4', ext: 'aar')
+}

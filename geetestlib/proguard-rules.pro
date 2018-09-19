@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# 极验SDK已经混淆处理，请勿再次混淆
+-dontwarn com.geetest.sdk.**
+-keep class com.geetest.sdk.**{*;}

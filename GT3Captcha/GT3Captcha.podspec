@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'GT3Captcha'
-  s.version          = '0.0.9'
+  s.version          = '0.1.2'
 
 #这里加上你的工程简介
   s.summary          = 'This is GT3Captcha'
@@ -17,7 +17,7 @@ GT3Captcha SDK, for ios develpoer.
 
   s.author           = { 'simon' => 'admin@ithome.me' }
 
-  s.source           = { :http => "https://github.com/cikichen/file_server/raw/master/GT3Captcha-0.0.9.zip" }
+  s.source           = { :http => "https://github.com/cikichen/file_server/raw/master/GT3Captcha-0.1.2.zip" }
 
 #最低iOS系统要求
   s.ios.deployment_target = '8.0'

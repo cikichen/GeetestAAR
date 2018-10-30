@@ -1,1 +1,1 @@
-include ':app', ':geetestlib'
+include ':app', ':geetestlib', ':captchasdk'
